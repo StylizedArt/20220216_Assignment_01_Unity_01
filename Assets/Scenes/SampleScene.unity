@@ -287,7 +287,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 62
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -489,7 +489,7 @@ Light:
     m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 1
+    m_Strength: 0.618
     m_Bias: 0.02
     m_NormalBias: 0.1
     m_NearPlane: 0.1
@@ -595,9 +595,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 007a66b0b9e7f2040afe877c4c646352, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 3
-  rotationSpeed: 3
+  movementSpeed: 2.5
+  rotationSpeed: 0.01
+  gravityForce: -9.8
+  jumpForce: 1
   target: {fileID: 1687258585}
+  groundedPlayer: 0
 --- !u!143 &2145775706
 CharacterController:
   m_ObjectHideFlags: 0
@@ -609,12 +612,12 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1.88
+  m_Height: 1.77
   m_Radius: 0.38
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_SkinWidth: 0.04
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.92, z: 0}
 --- !u!4 &2145775707
 Transform:
