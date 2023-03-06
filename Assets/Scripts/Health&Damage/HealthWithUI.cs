@@ -27,7 +27,7 @@ public class HealthWithUI : Health
         {
             healthBar.value = currentHealth;
         }
-        else if (healthBar)
+        else if (healthIcon)
         {
             healthIcon.fillAmount = currentHealth / maxHealth;
         }
