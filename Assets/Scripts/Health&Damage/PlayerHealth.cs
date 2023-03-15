@@ -19,6 +19,8 @@ public class PlayerHealth : HealthWithUI
     public override void Die()
     {
         base.Die();
+        // LevelManager.instance.UIManager
         anim.SetBool("Dead", true);
+        LevelManager.instance.PlayerDeath(GetComponent<PlayerData>().playerNumber);
     }
 }

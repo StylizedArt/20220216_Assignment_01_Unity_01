@@ -8,7 +8,7 @@ public class HealthWithArmour : HealthWithUI
     // Start is called before the first frame update
     void Start()
     {
-        
+        LevelManager.instance.PlayerDeath(7);
     }
 
     public override void TakeDamage(float damageAmount)

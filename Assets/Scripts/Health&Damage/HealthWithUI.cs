@@ -21,7 +21,7 @@ public class HealthWithUI : Health
         base.TakeDamage(damageAmount);
         UpdateUI();
     }    
-    void UpdateUI()
+    public void UpdateUI()
     {
         if(healthBar)
         {
