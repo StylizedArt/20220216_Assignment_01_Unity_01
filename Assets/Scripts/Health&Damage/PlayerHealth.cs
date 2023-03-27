@@ -11,16 +11,10 @@ public class PlayerHealth : HealthWithUI
         anim = GetComponentInChildren<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public override void Die()
     {
         base.Die();
-        // LevelManager.instance.UIManager
         anim.SetBool("Dead", true);
-        LevelManager.instance.PlayerDeath(GetComponent<PlayerData>().playerNumber);
+        LevelManager.instance.PlayerDeath(GetComponent<PlayerNumber>().playerNumber);
     }
 }

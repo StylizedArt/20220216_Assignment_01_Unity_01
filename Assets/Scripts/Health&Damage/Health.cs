@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events; 
+using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
@@ -16,17 +16,17 @@ public class Health : MonoBehaviour
     public virtual void TakeDamage(float damageAmount)
     {
         if (isDead) return;
-        Debug.Log("OUCH!");
+
+        Debug.Log("OUCH");
         OnDamaged.Invoke();
 
         currentHealth -= damageAmount;
 
         if(currentHealth <= 0)
         {
-            Die();
+           Die();
         }
     }
-
     public virtual void Die()
     {
         isDead = true;

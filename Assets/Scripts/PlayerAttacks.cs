@@ -9,6 +9,7 @@ public class PlayerAttacks : MonoBehaviour
     [Header("Ranged Attack Settings")]
     public GameObject projectile;
     public Transform launchPoint;
+
     public float lobSpeed, lobLift;
 
     [Header("Melee Attack Settings")]
@@ -35,7 +36,7 @@ public class PlayerAttacks : MonoBehaviour
             anim.Play("Shoot");
             Shoot();
         }
-        if(Input.GetKeyDown(melee))
+        if (Input.GetKeyDown(melee))
         {
             anim.Play("MeleeAttack");
             Invoke("ActivateMeleeCollider", attackDelay);
@@ -48,11 +49,14 @@ public class PlayerAttacks : MonoBehaviour
         {
             anim.SetBool("Taunt", false);
         }
+        
     }
     void Shoot()
     {
         GameObject currentProj = Instantiate(projectile, launchPoint.position, Quaternion.LookRotation(transform.forward));
+
         currentProj.GetComponent<Rigidbody>().AddForce((anim.transform.forward * lobSpeed) + (Vector3.up * lobLift), ForceMode.Impulse);
+
     }
     void ActivateMeleeCollider()
     {

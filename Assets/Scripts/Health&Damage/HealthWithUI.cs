@@ -20,10 +20,11 @@ public class HealthWithUI : Health
     {
         base.TakeDamage(damageAmount);
         UpdateUI();
-    }    
+    }
+
     public void UpdateUI()
     {
-        if(healthBar)
+        if (healthBar)
         {
             healthBar.value = currentHealth;
         }

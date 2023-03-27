@@ -11,6 +11,7 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] float gravityForce;
     [SerializeField] float jumpForce;
 
+
     [Header("Controls")]
     public KeyCode left;
     public KeyCode right;
@@ -18,7 +19,7 @@ public class CharacterMovement : MonoBehaviour
     public KeyCode down;
     public KeyCode jump;
 
-    // Components
+    //Components
     CharacterController cc;
     Animator anim;
 
@@ -27,7 +28,7 @@ public class CharacterMovement : MonoBehaviour
 
     public Transform target;
 
-    // Gravity and jump
+    //Gravity and jump
     Vector3 playerVelocity;
     public bool groundedPlayer;
 
@@ -37,14 +38,15 @@ public class CharacterMovement : MonoBehaviour
         cc = GetComponent<CharacterController>();
         anim = GetComponentInChildren<Animator>();
 
-        cam = Camera.main;
+        cam = GetComponentInChildren<Camera>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
         groundedPlayer = cc.isGrounded;
-        if(groundedPlayer && playerVelocity.y < 0 )
+        if(groundedPlayer && playerVelocity.y < 0)
         {
             if (anim.GetBool("Jump")) anim.SetBool("Jump", false);
             playerVelocity.y = 0;
@@ -53,10 +55,9 @@ public class CharacterMovement : MonoBehaviour
         float h = (Convert.ToInt64(Input.GetKey(left))*-1) + Convert.ToInt64(Input.GetKey(right));
         float v = (Convert.ToInt64(Input.GetKey(down)) * -1) + Convert.ToInt64(Input.GetKey(up));
 
-        // determine camera direction on a flat plain
+        //determine camera direction on a flat plain
         Vector3 camh = cam.transform.right;
         Vector3 camv = Vector3.Cross(camh, Vector3.up);
-
 
         if(h != 0 || v != 0)
         {
@@ -70,9 +71,10 @@ public class CharacterMovement : MonoBehaviour
         {
             anim.SetBool("HasInput", false);
         }
+        
 
         Quaternion desiredDirection = Quaternion.LookRotation(movementDirection);
-        transform.rotation = Quaternion.Lerp(transform.rotation, desiredDirection, rotationSpeed);
+        anim.transform.rotation = Quaternion.Lerp(anim.transform.rotation, desiredDirection, rotationSpeed);
 
         Vector3 animationVector = anim.transform.InverseTransformDirection(cc.velocity);
 
@@ -80,8 +82,8 @@ public class CharacterMovement : MonoBehaviour
         anim.SetFloat("VerticalSpeed", animationVector.z);
 
         ProcessGravity();
+       
     }
-
     public void ProcessGravity()
     {
         if(Input.GetKeyDown(jump) && groundedPlayer)
@@ -89,6 +91,7 @@ public class CharacterMovement : MonoBehaviour
             anim.SetBool("Jump", true);
             playerVelocity.y += Mathf.Sqrt(jumpForce * -3.0f * gravityForce);
         }
+
         playerVelocity.y += gravityForce * Time.deltaTime;
         cc.Move(playerVelocity * Time.deltaTime);
     }

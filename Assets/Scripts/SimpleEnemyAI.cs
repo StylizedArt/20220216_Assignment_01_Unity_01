@@ -15,9 +15,9 @@ public class SimpleEnemyAI : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
 
-        foreach(PlayerData player in LevelManager.instance.players)
+        foreach(GameObject player in LevelManager.instance.players)
         {
-            players.Add(player.gameObject);
+            players.Add(player);
         }
 
         CheckForClosestPlayer();
@@ -33,7 +33,7 @@ public class SimpleEnemyAI : MonoBehaviour
 
     void CheckForClosestPlayer()
     {
-        Debug.Log("Checking for players...");
+        Debug.Log("Checking for players");
 
         if (players[0].GetComponent<Health>().isDead) target = players[1].transform;
         else target = players[0].transform;
@@ -41,6 +41,7 @@ public class SimpleEnemyAI : MonoBehaviour
         for (int i = 1; i < players.Count; i++)
         {
             if (players[i].GetComponent<Health>().isDead) continue;
+
             if(Vector3.Distance(transform.position, players[i].transform.position) < Vector3.Distance(transform.position, target.position))
             {
                 Debug.Log("A new player is targeted");

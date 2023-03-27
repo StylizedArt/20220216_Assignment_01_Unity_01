@@ -15,7 +15,7 @@ public class Hazard : MonoBehaviour
         if (!tags.Contains(collision.tag)) return;
 
         Health health = collision.GetComponent<Health>();
-        if (health != null)
+        if(health != null)
         {
             health.TakeDamage(damageAmount);
         }

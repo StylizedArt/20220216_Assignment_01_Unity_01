@@ -2,7 +2,6 @@ using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-
 public class SaveSystem : MonoBehaviour
 {
     static public SaveSystem instance;
@@ -12,6 +11,7 @@ public class SaveSystem : MonoBehaviour
 
     private void Awake()
     {
+        //run singleton logic
         if (!instance)
         {
             instance = this;
@@ -24,6 +24,7 @@ public class SaveSystem : MonoBehaviour
 
         filePath = Application.persistentDataPath + "/" + fileName + ".data";
     }
+
     public void SaveGame(GameData saveData)
     {
         FileStream dataStream = new FileStream(filePath, FileMode.Create);
@@ -36,9 +37,9 @@ public class SaveSystem : MonoBehaviour
 
     public GameData LoadGame()
     {
-        if(File.Exists(filePath))
+        if (File.Exists(filePath))
         {
-            // file exists, load it and return the game data
+            //file exists, load it and return the game data
             FileStream dataStream = new FileStream(filePath, FileMode.Open);
 
             BinaryFormatter converter = new BinaryFormatter();
@@ -49,9 +50,10 @@ public class SaveSystem : MonoBehaviour
         }
         else
         {
-            // save file is missing
+            //save file is missing;
             Debug.LogWarning("Save File Not Found In " + filePath);
             return null;
         }
     }
+
 }
