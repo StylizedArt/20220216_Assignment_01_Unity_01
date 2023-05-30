@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         #region Singleton
-        if(instance != null)
+        if (instance != null)
         {
             Destroy(gameObject);
         }
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
         #endregion
 
         //attempt to load a save data
-       saveData = SaveSystem.instance.LoadGame();
+        saveData = SaveSystem.instance.LoadGame();
 
         //check if successful, if not, create a new save data
         if (saveData == null) saveData = new GameData();
@@ -44,14 +44,11 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            FillTempList();
-            FillSaveData();
-        }
+
     }
     public void FillTempList()
     {
+        Debug.Log("FILL THE SAVE LIST");
         tempScoreBoard = new List<PlayerData>();
         for (int i = 0; i < 10; i++)
         {
@@ -62,8 +59,9 @@ public class GameManager : MonoBehaviour
             data.wavesSurvived = saveData.highScorePlayerWaves[i];
             tempScoreBoard.Add(data);
         }
-        foreach(PlayerData player in currentPlayers)
+        foreach (PlayerData player in currentPlayers)
         {
+            Debug.Log("ADD PLAYER SCORES TO LIST");
             tempScoreBoard.Add(player);
         }
     }
@@ -107,24 +105,35 @@ public class GameManager : MonoBehaviour
             FillSaveData();
         }
     }
-   /* void CheckForEmpties()
+    public void ClearAndSaveData()
     {
-        if (highScorePlayerNames.Length == 0)
+        for (int i = 0; i < 10; i++)
         {
-            highScorePlayerNames = new string[10];
+            saveData.highScorePlayerNames[i] = "";
+            saveData.highScorePlayerKills[i] = 0;
+            saveData.highScorePlayerDeaths[i] = 0;
+            saveData.highScorePlayerWaves[i] = 0;
         }
-        if (highScorePlayerDeaths.Length == 0)
-        {
-            highScorePlayerDeaths = new int[10];
-        }
-        if (highScorePlayerWaves.Length == 0)
-        {
-            highScorePlayerWaves = new int[10];
-        }
-        if (highScorePlayerKills.Length == 0)
-        {
-            highScorePlayerKills = new int[10];
-        }
+        SaveSystem.instance.SaveGame(saveData);
+    }
+    /* void CheckForEmpties()
+     {
+         if (highScorePlayerNames.Length == 0)
+         {
+             highScorePlayerNames = new string[10];
+         }
+         if (highScorePlayerDeaths.Length == 0)
+         {
+             highScorePlayerDeaths = new int[10];
+         }
+         if (highScorePlayerWaves.Length == 0)
+         {
+             highScorePlayerWaves = new int[10];
+         }
+         if (highScorePlayerKills.Length == 0)
+         {
+             highScorePlayerKills = new int[10];
+         }
 
-    }*/
+     }*/
 }

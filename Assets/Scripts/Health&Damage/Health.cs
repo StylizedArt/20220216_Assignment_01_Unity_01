@@ -22,13 +22,14 @@ public class Health : MonoBehaviour
 
         currentHealth -= damageAmount;
 
-        if(currentHealth <= 0)
+        if (currentHealth <= 0)
         {
-           Die();
+            Die();
         }
     }
     public virtual void Die()
     {
+        if (isDead == true) return;
         isDead = true;
         OnDeath.Invoke();
     }

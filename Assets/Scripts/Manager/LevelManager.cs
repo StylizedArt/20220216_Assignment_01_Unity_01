@@ -14,7 +14,7 @@ public class LevelManager : MonoBehaviour
 
     void Awake()
     {
-        if(instance != null)
+        if (instance != null)
         {
             Destroy(gameObject);
         }
@@ -25,7 +25,7 @@ public class LevelManager : MonoBehaviour
     }
     #endregion
 
-    
+
     [Header("Players")]
     public GameObject[] players;
     public Transform[] playerSpawns;
@@ -39,7 +39,7 @@ public class LevelManager : MonoBehaviour
 
     public float timeBetweenWaves;
 
-    public enum GameStates { Prepping, InWave, Paused, Won, Lost}
+    public enum GameStates { Prepping, InWave, Paused, Won, Lost }
     public GameStates currentState;
 
     [Header("Attached Components and Scripts")]
@@ -53,7 +53,7 @@ public class LevelManager : MonoBehaviour
         timer.StartTimer(5f);
         currentState = GameStates.Prepping;
 
-        for(int i = 0; i < players.Length; i++)
+        for (int i = 0; i < players.Length; i++)
         {
             players[i].GetComponentInChildren<TMP_Text>().text = GameManager.instance.currentPlayers[i].playerName;
         }
@@ -63,7 +63,7 @@ public class LevelManager : MonoBehaviour
     void Update()
     {
         //UI update
-        if(currentState == GameStates.Prepping)
+        if (currentState == GameStates.Prepping)
         {
             UIManager.UpdateUI();
         }
@@ -74,7 +74,7 @@ public class LevelManager : MonoBehaviour
         currentState = GameStates.Prepping;
         timer.StartTimer(timeBetweenWaves);
 
-        foreach(GameObject player in players)
+        foreach (GameObject player in players)
         {
             if (player.GetComponent<Health>().isDead)
             {
@@ -82,7 +82,7 @@ public class LevelManager : MonoBehaviour
             }
             else
             {
-                int playerNum = player.GetComponent<PlayerNumber>().playerNumber -1;
+                int playerNum = player.GetComponent<PlayerNumber>().playerNumber - 1;
                 GameManager.instance.currentPlayers[playerNum].wavesSurvived++;
             }
         }
@@ -99,14 +99,22 @@ public class LevelManager : MonoBehaviour
     //track waves completed and run victory
     public void EndWave()
     {
-        if(currentWave < waves.Length)
+        currentWave++;
+        if (currentWave < waves.Length)
         {
-            currentWave++;
             StartPrep();
         }
         else
         {
             currentState = GameStates.Won;
+            foreach (GameObject player in players)
+            {
+                if (!player.GetComponent<Health>().isDead)
+                {
+                    int playerNum = player.GetComponent<PlayerNumber>().playerNumber - 1;
+                    GameManager.instance.currentPlayers[playerNum].wavesSurvived++;
+                }
+            }
             UIManager.EndGameUI();
             Invoke("SaveResultsAndLoadScene", 5);
         }
@@ -118,7 +126,7 @@ public class LevelManager : MonoBehaviour
         GameManager.instance.currentPlayers[playerNumber - 1].deaths++;
 
         //get a gameobject reference to the player
-        GameObject currentPlayer = players[playerNumber -1];
+        GameObject currentPlayer = players[playerNumber - 1];
 
         //deactivate components.
         currentPlayer.GetComponent<CharacterController>().enabled = false;
@@ -128,16 +136,18 @@ public class LevelManager : MonoBehaviour
         currentPlayer.GetComponent<PlayerAttacks>().meleeCollider.SetActive(false);
         currentPlayer.GetComponent<PlayerAttacks>().enabled = false;
 
+        //Check to see if all the players are dead. If so, end the game
         bool anyAlive = false;
-        foreach(GameObject player in players)
+        foreach (GameObject player in players)
         {
-            if(player.GetComponent<PlayerHealth>().isDead == false)
+            if (player.GetComponent<PlayerHealth>().isDead == false)
             {
                 anyAlive = true;
             }
         }
-        if(anyAlive == false)
+        if (anyAlive == false)
         {
+            Debug.Log("NO PLAYERS ALIVE");
             currentState = GameStates.Lost;
             UIManager.EndGameUI();
             Invoke("SaveResultsAndLoadScene", 5);
@@ -165,8 +175,18 @@ public class LevelManager : MonoBehaviour
     }
     void SaveResultsAndLoadScene()
     {
+        Debug.Log("LOADING THE END OF THE GAME");
         GameManager.instance.FillTempList();
         GameManager.instance.FillSaveData();
         SceneManager.LoadScene("Results");
+    }
+
+    public void IncreaseScore(int playerNumber)
+    {
+        GameManager.instance.currentPlayers[playerNumber].kills++;
+
+        UIManager.UpdateUI();
+
+        Debug.Log(GameManager.instance.currentPlayers[playerNumber].kills);
     }
 }
